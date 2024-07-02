@@ -15,6 +15,7 @@
                     <th scope="col">Tanggal</th>
                     <th scope="col">Alasan</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Bukti</th>
                     <th scope="col">Aksi</th>
                 </tr>
             </thead>
@@ -32,9 +33,39 @@
                         <td>{{ $p->status }}</td>
                         <td>
                             <a href="#" type="button" data-bs-toggle="modal"
+                                data-bs-target="#bukti{{ $p->id }}" class="btn btn-success btn-sm">Lihat</a>
+                        </td>
+                        <td>
+                            <a href="#" type="button" data-bs-toggle="modal"
                                 data-bs-target="#editModal{{ $p->id }}" class="btn btn-primary btn-sm">Edit</a>
                         </td>
                     </tr>
+                    {{-- Modal bukti --}}
+                    <div class="modal fade" id="bukti{{ $p->id }}" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Bukti</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="img-fluid d-flex item-center justify-content-center">
+                                        @if ($p->bukti == null)
+                                            <p>Belum ada bukti</p>
+                                        @else
+                                            <img src="{{ asset('storage/' . $p->bukti) }}" class="">
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Modal bukti --}}
 
                     {{-- Modal --}}
                     <div class="modal fade" id="editModal{{ $p->id }}" tabindex="-1"
@@ -48,9 +79,9 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="{{ route('update', $p->id) }}" method="POST">
+                                    <form action="{{ route('update', $p->id) }}" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
-
                                         <div class="mb-3">
                                             <label class="form-label">Nama</label>
                                             <input type="text" class="form-control" name="nama"
@@ -92,7 +123,8 @@
                                                     kerja</option>
                                             </select>
                                         </div>
-                                        <div id="inputWaktu{{ $p->id }}" class="{{ !$p->waktu ? 'd-none' : '' }}">
+                                        <div id="inputWaktu{{ $p->id }}"
+                                            class="{{ !$p->waktu ? 'd-none' : '' }}">
                                             <div class="mb-3">
                                                 <label for="waktu" class="form-label">Masukkan Waktu</label>
                                                 <input type="time" step="60" class="form-control" id="waktu"
@@ -101,7 +133,8 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Izin ke-</label>
-                                            <select class="form-select" name="izin_ke" aria-label="Default select example">
+                                            <select class="form-select" name="izin_ke"
+                                                aria-label="Default select example">
                                                 <option value="1" @if ($p->izin_ke == 1) selected @endif>1
                                                 </option>
                                                 <option value="2" @if ($p->izin_ke == 2) selected @endif>2
@@ -116,6 +149,11 @@
                                         <div class="mb-3">
                                             <label for="alasan" class="form-label">Alasan</label>
                                             <textarea class="form-control" id="alasan" name="alasan" rows="3">{{ $p->alasan }}</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="formFile" class="form-label">Bukti</label>
+                                            <input class="form-control" class="form-control w-50" name="bukti"
+                                                type="file" id="formFile">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"

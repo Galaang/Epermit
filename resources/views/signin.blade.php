@@ -42,8 +42,9 @@
                         @csrf
                         <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
                             <div class="d-flex align-items-center justify-content-between mb-3">
-                                <a href="index.html" class="">
-                                    <h3 class="text-primary">EPERMIT</h3>
+                                <a href="index.html" class="d-flex align-items-center justify-content-center">
+                                    <img src="{{ asset('img/logo.png') }}" style="width: 48px" alt="">
+                                    <h3 class="text-primary mt-3">EPERMIT</h3>
                                 </a>
                                 <h3>Sign In</h3>
                             </div>

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('role_id');
             $table->string('nip');
             $table->string('name');
+            $table->string('email')->unique()->nullable();
             $table->unsignedBigInteger('pangkat_jabatan_id');
             $table->unsignedBigInteger('jabatan_id');
             $table->unsignedBigInteger('unit_id');

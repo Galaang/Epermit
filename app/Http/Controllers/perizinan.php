@@ -7,6 +7,8 @@ use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+
 
 class perizinan extends Controller
 {
@@ -29,10 +31,15 @@ class perizinan extends Controller
             'izin_ke' => 'required',
             'tanggal' => 'required|date',
             'alasan' => 'required',
+            'bukti' => 'required|file|max:10240',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if ($request->hasFile('bukti')) {
+            $filePath = $request->file('bukti')->store('bukti_perizinan'); // Simpan file di dalam folder 'storage/app/public/bukti_perizinan'
         }
 
         $validatedData = $validator->validated();
@@ -51,6 +58,7 @@ class perizinan extends Controller
         $perizinan->izin_ke = $validatedData['izin_ke'];
         $perizinan->tanggal = $validatedData['tanggal'];
         $perizinan->alasan = $validatedData['alasan'];
+        $perizinan->bukti = $filePath;
         $perizinan->status = 'diproses';
         $perizinan->save();
 
@@ -67,33 +75,56 @@ class perizinan extends Controller
 
     public function data_permohonan()
     {
+        // Periksa jurusan pengguna yang sedang login
         $user = Auth::user();
+        // Pastikan pengguna adalah Kaprodi
+        if ($user->jabatan_id == 2) {
+            // Mengambil perizinan yang sesuai dengan jurusan pengguna yang sedang login
+            $perizinan = ModelsPerizinan::whereHas('user', function ($query) use ($user) {
+                $query->where('jabatan', 'Dosen')
+                    ->where('unit_kerja', $user->unit->name);
+            })->with('user')->get();
 
-        $jenisUnit = $user->unit_id;
-        $jabatanId = $user->jabatan_id;
-
-        // Mendefinisikan array untuk jenis jabatan yang ingin diambil
-        $jabatanIds = [];
-
-        // Menentukan jabatan-jabatan yang sesuai berdasarkan jabatan pengguna
-        if ($jabatanId == 1) { // Misalnya ID 1 adalah dosen
-            $jabatanIds = [1, 2]; // Dosen dan kaprodi
-        } elseif ($jabatanId == 2) { // Misalnya ID 2 adalah kaprodi
-            $jabatanIds = [2, 3]; // Kaprodi dan kajur
+            return view('kaprodi.data_permohonan', compact('perizinan'));
         } else {
-            $jabatanIds = [$jabatanId];
+            // Jika pengguna tidak memiliki akses, redirect atau tampilkan pesan error
+            return redirect()->route('dashboard')->with('error', 'Anda tidak memiliki akses untuk melihat data ini.');
         }
-
-        // Mengambil perizinan yang sesuai dengan jenis jabatan pengguna yang sedang login
-        $perizinan = ModelsPerizinan::join('users', 'users.id', '=', 'perizinans.user_id')
-            ->where('users.unit_id', $jenisUnit)
-            ->whereIn('users.jabatan_id', $jabatanIds)
-            ->select('perizinans.*')
-            ->paginate(15);
-
-        return view('data_permohonan', compact('perizinan'));
     }
 
+    public function data_permohonan_kajur()
+    {
+        // Periksa jurusan pengguna yang sedang login
+        $user = Auth::user();
+        // Pastikan pengguna adalah Kaprodi
+        if ($user->jabatan_id == 3) {
+            // Mengambil perizinan yang sesuai dengan jurusan pengguna yang sedang login
+            $perizinan = ModelsPerizinan::whereHas('user', function ($query) use ($user) {
+                $query->where('jabatan', 'Ketua Prodi')
+                    ->where('unit_kerja', $user->unit->name);
+            })->with('user')->get();
+
+            return view('kajur.data_permohonan', compact('perizinan'));
+        } else {
+            // Jika pengguna tidak memiliki akses, redirect atau tampilkan pesan error
+            return redirect()->route('dashboard')->with('error', 'Anda tidak memiliki akses untuk melihat data ini.');
+        }
+    }
+
+    public function data_permohonan_wadir()
+    {
+        $perizinan = ModelsPerizinan::all();
+        return view('wadir.data_permohonan', compact('perizinan'));
+    }
+
+
+    public function editRespon(Request $request, $id)
+    {
+        $perizinan = ModelsPerizinan::findOrFail($id);
+        $perizinan->status = $request->input('status');
+        $perizinan->save();
+        return redirect()->back()->with('success', 'status berhasil diupdate.');
+    }
 
 
     public function riwayatpermohonanBaup()
@@ -112,7 +143,8 @@ class perizinan extends Controller
             'jenis_izin' => 'required|string',
             'izin_ke' => 'required|integer',
             'tanggal' => 'required|date',
-            'alasan' => 'required|string'
+            'alasan' => 'required|string',
+            'bukti' => 'nullable|file|max:10240', // Tambahkan batas maksimal ukuran file 10MB
         ]);
 
         // Set waktu ke null jika jenis izin adalah 'Tidak Masuk Kerja'
@@ -122,6 +154,18 @@ class perizinan extends Controller
         } else {
             // Jika jenis izin bukan 'Tidak Masuk Kerja', ambil waktu dari input
             $waktu = $request->input('waktu');
+        }
+
+        // Handle file upload jika ada file baru
+        if ($request->hasFile('bukti')) {
+            // Hapus file lama jika ada
+            if ($perizinan->bukti) {
+                Storage::delete($perizinan->bukti);
+            }
+
+            // Simpan file baru
+            $filePath = $request->file('bukti')->store('bukti_perizinan'); // Simpan file di dalam folder 'storage/app/public/bukti_perizinan'
+            $perizinan->bukti = $filePath;
         }
 
         // Update data perizinan

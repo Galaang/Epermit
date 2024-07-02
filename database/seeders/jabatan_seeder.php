@@ -29,7 +29,7 @@ class jabatan_seeder extends Seeder
             'name' => 'Wakil Direktur 2',
         ]);
         jabatan::create([
-            'name' => 'Baup',
+            'name' => 'Bagian kepegawaian umum',
         ]);
     }
 }

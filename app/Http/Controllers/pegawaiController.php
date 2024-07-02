@@ -8,6 +8,7 @@ use App\Models\perizinan;
 use App\Models\Unit_kerja;
 use Illuminate\Http\Request;
 use App\Models\pangkat_jabatan;
+use Illuminate\Support\Facades\Hash;
 
 class pegawaiController extends Controller
 {
@@ -58,7 +59,7 @@ class pegawaiController extends Controller
         $pegawai->pangkat_jabatan_id = $request->pangkat_jabatan_id;
         $pegawai->jabatan_id = $request->jabatan_id;
         $pegawai->unit_id = $request->unit_id;
-        $pegawai->password = bcrypt($request->nip);
+        $pegawai->password = Hash::make($request->nip);
 
         $pegawai->save();
 

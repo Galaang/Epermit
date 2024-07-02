@@ -3,7 +3,7 @@
 @section('container')
     <div class="container my-4">
         <h3 class="mb-3">Formulir Permohonan Izin</h3>
-        <form action="{{ route('form-insert') }}" method="POST">
+        <form action="{{ route('form-insert') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label class="form-label">Nama</label>
@@ -59,6 +59,10 @@
             <div class="mb-3">
                 <label for="alasan" class="form-label">Alasan</label>
                 <textarea class="form-control w-50" id="alasan" name="alasan" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Bukti</label>
+                <input class="form-control" class="form-control w-50" name="bukti" type="file" id="formFile">
             </div>
             <button type="submit" class="btn btn-primary">Kirim</button>
         </form>

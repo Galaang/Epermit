@@ -25,6 +25,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->string('alasan');
             $table->string('status');
+            $table->string('bukti')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

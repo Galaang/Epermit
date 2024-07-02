@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth_controller;
+use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\pegawaiController;
 use App\Http\Controllers\perizinan;
 use Illuminate\Support\Facades\Route;
@@ -16,29 +17,42 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('/dashboard', function () {
-    return view('index');
-})->name('dashboard');
+//dashboard
+Route::get('/dashboard', [dashboardController::class, 'index'])->name('dashboard');
 
 //login
-Route::get('/login', [Auth_controller::class, 'loginview'])->name('loginview');
+Route::get('/', [Auth_controller::class, 'loginview'])->name('loginview');
 Route::post('/login', [Auth_controller::class, 'login'])->name('login');
 
 //logout
 Route::post('/logout', [Auth_controller::class, 'logout'])->name('logout');
 
+// Route::middleware(['auth', 'role:2'])->group(function () {
+    Route::get('/data_permohonan', [perizinan::class, 'data_permohonan'])->name('data_permohonan');
+    Route::get('/data_permohonan_kajur', [perizinan::class, 'data_permohonan_kajur'])->name('data_permohonan_kajur');
+    Route::get('/data_permohonan_wadir', [perizinan::class, 'data_permohonan_wadir'])->name('data_permohonan_wadir');
+    // });
+
+// Route::middleware(['auth', 'role:1'])->group(function () {
+    Route::get('/form', [perizinan::class, 'form_izin'])->name('form_izin');
+    Route::post('/form-insert', [perizinan::class, 'insert'])->name('form-insert');
+    Route::get('/riwayat_permohonan', [perizinan::class, 'riwayat_permohonan'])->name('riwayat_permohonan');
+    Route::post('/edit-respon/{id}', [perizinan::class, 'editRespon'])->name('edit_respon');
+// });
+
+// profile
+Route::get('/profile', [Auth_controller::class, 'profile'])->name('profile');
+Route::post('/profile', [Auth_controller::class, 'editProfile'])->name('edit_profile');
+
 //perizinan
-Route::get('/form', [perizinan::class, 'form_izin'])->name('form_izin');
-Route::post('/form-insert', [perizinan::class, 'insert'])->name('form-insert');
-Route::get('/riwayat_permohonan', [perizinan::class, 'riwayat_permohonan'])->name('riwayat_permohonan');
 Route::get('/riwayatPermohonan', [perizinan::class, 'riwayatpermohonanBaup'])->name('riwayatpermohonanBaup');
 Route::get('/data_permohonan', [perizinan::class, 'data_permohonan'])->name('data_permohonan');
 
-Route::match(['get', 'post'],'/update/data_permohonan/{id}', [perizinan::class, 'update'])->name('update');
+Route::match(['get', 'post'], '/update/data_permohonan/{id}', [perizinan::class, 'update'])->name('update');
 
 //pegawai
 Route::get('/pegawai', [pegawaiController::class, 'pegawai'])->name('pegawai');

@@ -18,6 +18,6 @@ class cekRole
         if (in_array($request->user()->role_id, $role)) {
             return $next($request);
         }
-        return redirect()->route('login');
+        return redirect()->route('dashboard');
     }
 }

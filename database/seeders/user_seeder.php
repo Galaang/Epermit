@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class user_seeder extends Seeder
 {
@@ -46,10 +47,11 @@ class user_seeder extends Seeder
             'role_id' => 4,
             'nip' => '33333',
             'name' => 'Baup',
+            'email' => 'baup@gmail.com',
             'pangkat_jabatan_id' => 1,
             'jabatan_id' => 6,
             'unit_id' => 1,
-            'password' => bcrypt('33333'),
+            'password' => Hash::make('33333'),
         ]);
     }
 }

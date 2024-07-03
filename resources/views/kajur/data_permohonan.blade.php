@@ -34,7 +34,17 @@
                         @endif
                         <td>{{ $p->tanggal }}</td>
                         <td>{{ $p->alasan }}</td>
-                        <td>{{ $p->status }}</td>
+                        <td>
+                            @if ($p->status == 'Pending')
+                                <span class="badge rounded-pill bg-warning">{{$p->status}}</span>
+                            @endif
+                            @if ($p->status == 'Disetujui')
+                                <span class="badge rounded-pill bg-success">{{$p->status}}</span>
+                            @endif
+                            @if ($p->status == 'Ditolak')
+                                <span class="badge rounded-pill bg-danger">{{$p->status}}</span>
+                            @endif
+                        </td>
                         <td>
                             <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#bukti{{ $p->id }}">
@@ -42,10 +52,22 @@
                             </button>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#editStatus{{ $p->id }}">
-                                Edit
-                            </button>
+                            <div class="d-flex flex-column">
+                                <form action="{{ route('edit_respon', $p->id) }}" method="POST" class="d-flex">
+                                    @csrf
+                                    <input type="hidden" name="status" value="Pending">
+                                    <button type="submit" class="btn btn-primary btn-sm mb-2">
+                                        Disetujui
+                                    </button>
+                                </form>
+                                <form action="{{ route('edit_respon', $p->id) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="status" value="Ditolak">
+                                    <button type="submit" class="btn btn-danger btn-sm mb-2">
+                                        Ditolak
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
 

@@ -114,10 +114,20 @@ class perizinan extends Controller
         }
     }
 
-    public function data_permohonan_wadir()
+    public function data_permohonan_wadir1()
     {
-        $perizinan = ModelsPerizinan::all();
+        //mengambil data sesuai kepala jurusan
+        $perizinan = ModelsPerizinan::where('jabatan', 'Ketua Jurusan')->get();
+
         return view('wadir.data_permohonan', compact('perizinan'));
+    }
+
+    public function data_permohonan_wadir2()
+    {
+        // Mengambil data sesuai status disetujui
+        $perizinan = ModelsPerizinan::where('status', 'Pending')->get();
+
+        return view('wadir.data_permohonanWd2', compact('perizinan'));
     }
 
 

@@ -30,18 +30,30 @@
                         <td>{{ $p->waktu ?? '-' }}</td>
                         <td>{{ $p->tanggal }}</td>
                         <td>{{ $p->alasan }}</td>
-                        <td>{{ $p->status }}</td>
+                        <td>
+                            @if ($p->status == 'Pending')
+                                <span class="badge rounded-pill bg-warning">{{ $p->status }}</span>
+                            @endif
+                            @if ($p->status == 'Disetujui')
+                                <span class="badge rounded-pill bg-success">{{ $p->status }}</span>
+                            @endif
+                            @if ($p->status == 'Ditolak')
+                                <span class="badge rounded-pill bg-danger">{{ $p->status }}</span>
+                            @endif
+                        </td>
                         <td>
                             <a href="#" type="button" data-bs-toggle="modal"
-                                data-bs-target="#bukti{{ $p->id }}" class="btn btn-success btn-sm">Lihat</a>
+                                data-bs-target="#bukti{{ $p->id }}" class="btn btn-secondary btn-sm">Lihat</a>
                         </td>
                         <td>
                             @if ($p->status == 'Disetujui')
                                 <button href="#" disabled type="button" data-bs-toggle="modal"
-                                    data-bs-target="#editModal{{ $p->id }}" class="btn btn-primary btn-sm">Edit</but>
-                            @else
-                                <button href="#" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#editModal{{ $p->id }}" class="btn btn-primary btn-sm">Edit</button>
+                                    data-bs-target="#editModal{{ $p->id }}" class="btn btn-primary btn-sm">Edit
+                                    </but>
+                                @else
+                                    <button href="#" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#editModal{{ $p->id }}"
+                                        class="btn btn-primary btn-sm">Edit</button>
                             @endif
                         </td>
                     </tr>

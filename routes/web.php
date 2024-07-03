@@ -34,7 +34,8 @@ Route::post('/logout', [Auth_controller::class, 'logout'])->name('logout');
 // Route::middleware(['auth', 'role:2'])->group(function () {
     Route::get('/data_permohonan', [perizinan::class, 'data_permohonan'])->name('data_permohonan');
     Route::get('/data_permohonan_kajur', [perizinan::class, 'data_permohonan_kajur'])->name('data_permohonan_kajur');
-    Route::get('/data_permohonan_wadir', [perizinan::class, 'data_permohonan_wadir'])->name('data_permohonan_wadir');
+    Route::get('/data_permohonan_wadir', [perizinan::class, 'data_permohonan_wadir1'])->name('data_permohonan_wadir');
+    Route::get('/data_permohonan_wadir2', [perizinan::class, 'data_permohonan_wadir2'])->name('data_permohonan_wadir2');
     // });
 
 // Route::middleware(['auth', 'role:1'])->group(function () {

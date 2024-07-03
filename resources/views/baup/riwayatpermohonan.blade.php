@@ -15,7 +15,7 @@
                     <th scope="col">Tanggal</th>
                     <th scope="col">Alasan</th>
                     <th scope="col">Status</th>
-                    
+
                 </tr>
             </thead>
             <tbody>
@@ -29,7 +29,17 @@
                         <td>{{ $p->waktu ?? '-' }}</td>
                         <td>{{ $p->tanggal }}</td>
                         <td>{{ $p->alasan }}</td>
-                        <td>{{ $p->status }}</td>
+                        <td>
+                            @if ($p->status == 'Pending')
+                                <span class="badge rounded-pill bg-warning">{{ $p->status }}</span>
+                            @endif
+                            @if ($p->status == 'Disetujui')
+                                <span class="badge rounded-pill bg-success">{{ $p->status }}</span>
+                            @endif
+                            @if ($p->status == 'Ditolak')
+                                <span class="badge rounded-pill bg-danger">{{ $p->status }}</span>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

@@ -1,10 +1,11 @@
 <div class="sidebar pe-4 pb-3">
     <nav class="navbar bg-light navbar-light">
         <div class="container">
-                <a href="{{route('dashboard')}}" class="navbar-brand  mb-3 d-flex align-items-center justify-content-center">
-                    <img src="{{ asset('img/logo.png') }}" style="width: 48px" class="" alt="">
-                    <h4 class="text-primary mt-3"></i>E-Permit PNC</h3>
-                </a>
+            <a href="{{ route('dashboard') }}"
+                class="navbar-brand  mb-3 d-flex align-items-center justify-content-center">
+                <img src="{{ asset('img/logo.png') }}" style="width: 48px" class="" alt="">
+                <h4 class="text-primary mt-3"></i>E-Permit PNC</h3>
+            </a>
         </div>
         <div class="d-flex align-items-center ms-4 mb-4">
             <div class="ms-3">
@@ -36,9 +37,10 @@
                         <a href="{{ route('form_izin') }}" class="dropdown-item">Permohonan</a>
                         <a href="{{ route('riwayat_permohonan') }}" class="dropdown-item">Riwayat Permohonan</a>
                         @if (auth()->check() && auth()->user()->jabatan_id == 2)
-                        <a href="{{ route('data_permohonan') }}" class="dropdown-item">Data Permohonan Izin</a>
+                            <a href="{{ route('data_permohonan') }}" class="dropdown-item">Data Permohonan Izin</a>
                         @elseif (auth()->check() && auth()->user()->jabatan_id == 3)
-                        <a href="{{ route('data_permohonan_kajur') }}" class="dropdown-item">Data Permohonan Izin</a>
+                            <a href="{{ route('data_permohonan_kajur') }}" class="dropdown-item">Data Permohonan
+                                Izin</a>
                         @endif
                         <a href="element.html" class="dropdown-item">Other Elements</a>
                     </div>
@@ -51,7 +53,13 @@
                     <div class="dropdown-menu bg-transparent border-0">
                         <a href="{{ route('form_izin') }}" class="dropdown-item">Permohonan</a>
                         <a href="{{ route('riwayat_permohonan') }}" class="dropdown-item">Riwayat Permohonan</a>
-                        <a href="{{ route('data_permohonan_wadir') }}" class="dropdown-item">Data Permohonan Izin</a>
+                        @if (auth()->check() && auth()->user()->jabatan_id == 5)
+                            <a href="{{ route('data_permohonan_wadir2') }}" class="dropdown-item">Data Permohonan
+                                Izin</a>
+                        @else
+                            <a href="{{ route('data_permohonan_wadir') }}" class="dropdown-item">Data Permohonan
+                                Izin</a>
+                        @endif
                         <a href="element.html" class="dropdown-item">Other Elements</a>
                     </div>
                 </div>

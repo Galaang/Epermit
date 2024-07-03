@@ -11,7 +11,7 @@
                         <i class="bi bi-clipboard-fill fa-2x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">Permohonan Izin</p>
-                            <h6 class="mb-0">1</h6>
+                            <h6 class="mb-0">{{$total_perizinan}}</h6>
                         </div>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
                         <i class="bi bi-clipboard-check-fill fa-2x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">Izin Disetujui</p>
-                            <h6 class="mb-0">2</h6>
+                            <h6 class="mb-0">{{$perizinan_disetujui}}</h6>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                         <i class="bi bi-clipboard-minus-fill fa-2x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">Izin Ditolak</p>
-                            <h6 class="mb-0">3</h6>
+                            <h6 class="mb-0">{{$perizinan_ditolak}}</h6>
                         </div>
                     </div>
                 </div>
@@ -91,12 +91,46 @@
                                     </button>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#editStatus{{ $p->id }}">
-                                        Edit
-                                    </button>
+                                    @if ($p->status == 'Disetujui')
+                                        <button type="button" disabled class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#editStatus{{ $p->id }}">
+                                            Edit
+                                        </button>
+                                    @else
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#editStatus{{ $p->id }}">
+                                            Edit
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
+                            {{-- Modal bukti --}}
+                            <div class="modal fade" id="bukti{{ $p->id }}" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Bukti</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="img-fluid d-flex item-center justify-content-center">
+                                                @if ($p->bukti == null)
+                                                    <p>Belum ada bukti</p>
+                                                @else
+                                                    <img src="{{ asset('storage/' . $p->bukti) }}" class="">
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Modal bukti --}}
                         @endforeach
                     </tbody>
                 </table>

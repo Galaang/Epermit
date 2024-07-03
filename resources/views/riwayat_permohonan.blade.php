@@ -36,8 +36,13 @@
                                 data-bs-target="#bukti{{ $p->id }}" class="btn btn-success btn-sm">Lihat</a>
                         </td>
                         <td>
-                            <a href="#" type="button" data-bs-toggle="modal"
-                                data-bs-target="#editModal{{ $p->id }}" class="btn btn-primary btn-sm">Edit</a>
+                            @if ($p->status == 'Disetujui')
+                                <button href="#" disabled type="button" data-bs-toggle="modal"
+                                    data-bs-target="#editModal{{ $p->id }}" class="btn btn-primary btn-sm">Edit</but>
+                            @else
+                                <button href="#" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#editModal{{ $p->id }}" class="btn btn-primary btn-sm">Edit</button>
+                            @endif
                         </td>
                     </tr>
                     {{-- Modal bukti --}}

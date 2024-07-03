@@ -31,15 +31,16 @@ class perizinan extends Controller
             'izin_ke' => 'required',
             'tanggal' => 'required|date',
             'alasan' => 'required',
-            'bukti' => 'required|file|max:10240',
+            'bukti' => 'nullable|file|max:10240',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $filePath = null;
         if ($request->hasFile('bukti')) {
-            $filePath = $request->file('bukti')->store('bukti_perizinan'); // Simpan file di dalam folder 'storage/app/public/bukti_perizinan'
+            $filePath = $request->file('bukti')->store('bukti_perizinan');
         }
 
         $validatedData = $validator->validated();
@@ -58,7 +59,9 @@ class perizinan extends Controller
         $perizinan->izin_ke = $validatedData['izin_ke'];
         $perizinan->tanggal = $validatedData['tanggal'];
         $perizinan->alasan = $validatedData['alasan'];
-        $perizinan->bukti = $filePath;
+        if ($filePath) {
+            $perizinan->bukti = $filePath;
+        }
         $perizinan->status = 'diproses';
         $perizinan->save();
 

@@ -31,5 +31,17 @@ class jabatan_seeder extends Seeder
         jabatan::create([
             'name' => 'Bagian kepegawaian umum',
         ]);
+        jabatan::create([
+            'name' => 'Direktur',
+        ]);
+        jabatan::create([
+            'name' => 'Kepala Unit',
+        ]);
+        jabatan::create([
+            'name' => 'Sekretaris Jurusan',
+        ]);
+        jabatan::create([
+            'name' => 'Tenaga Kependidikan',
+        ]);
     }
 }

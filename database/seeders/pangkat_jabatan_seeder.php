@@ -16,5 +16,17 @@ class pangkat_jabatan_seeder extends Seeder
         pangkat_jabatan::create([
             'name' => 'Penata Tingkat 1'
         ]);
+        pangkat_jabatan::create([
+            'name' => 'Penata Muda Tingkat 1'
+        ]);
+        pangkat_jabatan::create([
+            'name' => 'Penata'
+        ]);
+        pangkat_jabatan::create([
+            'name' => 'Pengatur Tingkat 1'
+        ]);
+        pangkat_jabatan::create([
+            'name' => 'Pengatur'
+        ]);
     }
 }

@@ -87,12 +87,15 @@ Route::post('/reset-password', function (Request $request) {
 
 
 Route::middleware(['auth', 'role:2'])->group(function () {
-    Route::get('/data_permohonan', [perizinan::class, 'data_permohonan'])->name('data_permohonan');
+    // Route::get('/data_permohonan', [perizinan::class, 'data_permohonan'])->name('data_permohonan');
     Route::get('/data_permohonan_kajur', [perizinan::class, 'data_permohonan_kajur'])->name('data_permohonan_kajur');
 });
 
+Route::middleware(['auth', 'role:2,3'])->group(function () {
+Route::get('/data_permohonan', [perizinan::class, 'data_permohonan'])->name('data_permohonan');
+});
+
 Route::middleware(['auth', 'role:3'])->group(function () {
-    Route::get('/data_permohonan', [perizinan::class, 'data_permohonan'])->name('data_permohonan');
     Route::get('/data_permohonan_wadir', [perizinan::class, 'data_permohonan_wadir1'])->name('data_permohonan_wadir');
     Route::get('/data_permohonan_wadir2', [perizinan::class, 'data_permohonan_wadir2'])->name('data_permohonan_wadir2');
 });

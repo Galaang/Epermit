@@ -31,6 +31,9 @@
                         <td>{{ $p->tanggal }}</td>
                         <td>{{ $p->alasan }}</td>
                         <td>
+                        @if ($p->status == 'diproses')
+                                <span class="badge rounded-pill bg-warning">{{ $p->status }}</span>
+                            @endif
                             @if ($p->status == 'Pending')
                                 <span class="badge rounded-pill bg-warning">{{ $p->status }}</span>
                             @endif

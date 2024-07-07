@@ -45,8 +45,8 @@ class user_seeder extends Seeder
         // ]);
         User::create([
             'role_id' => 4,
-            'nip' => '33333',
-            'name' => 'Baup',
+            'nip' => '199009202019032019',
+            'name' => 'Windi Astriani, A.Md.',
             'email' => 'baup@gmail.com',
             'pangkat_jabatan_id' => 1,
             'jabatan_id' => 6,

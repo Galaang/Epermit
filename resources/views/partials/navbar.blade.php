@@ -13,7 +13,6 @@
             </a>
             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                     <a href="{{ route('profile') }}" class="dropdown-item">Profile</a>
-                <a href="#" class="dropdown-item">Settings</a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="dropdown-item">Log Out</button>

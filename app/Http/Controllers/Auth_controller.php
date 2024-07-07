@@ -51,6 +51,7 @@ class Auth_controller extends Controller
 
     public function editProfile(Request $request)
     {
+        // dd($request->all());
         /** @var \App\Models\User $user **/
         $user = Auth::user();
 
@@ -59,31 +60,29 @@ class Auth_controller extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' .  $user->id,
             'nip' => 'required|numeric',
             'password_lama' => 'nullable|string',
-            'password_baru' => 'nullable|string|confirmed',
+            'password_baru' => 'nullable|string',
         ]);
-        // dd($request);
 
-        // Verifikasi password jika ada perubahan password
-        // if ($request->password_lama && $request->password_baru) {
-        //     if (!Hash::check($request->password_lama, $user->password)) {
-        //         return back()->with('error', 'Password lama yang Anda masukkan salah.');
-        //     }
-        //     $user->password = Hash::make($request->password_baru);
-        // }
+        // Memeriksa apakah password lama benar
+        if (!is_null($request->password_lama) && !Hash::check($request->password_lama, $user->password)) {
+            return back()->withErrors(['password_lama' => 'Password lama yang Anda masukkan salah.'])->withInput();
+        }
 
-        if ($request->password_lama && $request->password_baru) {
-            if (!Hash::check($request->password_lama, $user->password)) {
-                return back()->with('error', 'Password lama yang Anda masukkan salah.');
-            }
+        // Memeriksa apakah password baru benar
+        if (!is_null($request->password_baru) && $request->password_baru === $request->password_lama) {
+            return back()->withErrors(['password_baru' => 'Password baru yang Anda masukkan sama dengan password lama.'])->withInput();
+        }
+
+        if (!is_null($request->password_baru)) {
             $user->password = Hash::make($request->password_baru);
         }
+
 
         // Mengupdate data user
         $user->name = $request->name;
         $user->email = $request->email;
         $user->nip = $request->nip;
 
-        // Tambahkan field lain yang ingin diupdate
         $user->save();
 
         return back()->with('success', 'Profil berhasil diperbarui.');

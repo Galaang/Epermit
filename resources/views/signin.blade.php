@@ -55,13 +55,16 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="form-floating mb-4">
+                            <div class="form-floating mb-3">
                                 <input type="password" name="password" class="form-control" id="floatingPassword"
                                     placeholder="Password">
                                 <label for="floatingPassword">Password</label>
                                 @error('password')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
+                            </div>
+                            <div class="d-flex items-center justify-content-end mb-2">
+                                <a href="{{route("password.request")}}" >Lupa password?</a>
                             </div>
                             <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
                         </div>

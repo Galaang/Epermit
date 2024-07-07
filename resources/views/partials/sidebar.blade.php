@@ -24,7 +24,6 @@
                     <div class="dropdown-menu bg-transparent border-0">
                         <a href="{{ route('form_izin') }}" class="dropdown-item">Permohonan</a>
                         <a href="{{ route('riwayat_permohonan') }}" class="dropdown-item">Riwayat Permohonan</a>
-                        <a href="element.html" class="dropdown-item">Other Elements</a>
                     </div>
                 </div>
             @endif
@@ -42,7 +41,6 @@
                             <a href="{{ route('data_permohonan_kajur') }}" class="dropdown-item">Data Permohonan
                                 Izin</a>
                         @endif
-                        <a href="element.html" class="dropdown-item">Other Elements</a>
                     </div>
                 </div>
             @endif
@@ -60,7 +58,6 @@
                             <a href="{{ route('data_permohonan_wadir') }}" class="dropdown-item">Data Permohonan
                                 Izin</a>
                         @endif
-                        <a href="element.html" class="dropdown-item">Other Elements</a>
                     </div>
                 </div>
             @endif
@@ -68,6 +65,14 @@
             @if (auth()->check() && auth()->user()->role_id == '4')
                 <a href="{{ route('riwayatpermohonanBaup') }}" class="nav-item nav-link"><i
                         class="bi bi-clipboard2-fill me-2"></i></i>Riwayat Permohonan</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="bi bi-clipboard2-fill me-2"></i>Permohonan Izin</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="{{ route('form_izin') }}" class="dropdown-item">Permohonan</a>
+                        <a href="{{ route('riwayat_permohonan') }}" class="dropdown-item">Riwayat Permohonan</a>
+                    </div>
+                </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
                             class="bi bi-person-fill me-2"></i>Pegawai</a>

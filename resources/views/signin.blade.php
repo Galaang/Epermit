@@ -40,15 +40,16 @@
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                     <form action="{{ route('login') }}" method="POST">
                         @csrf
-                       <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+                        <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
                             <div class="d-flex align-items-center justify-content-between mb-3">
                                 <a href="index.html" class="d-flex align-items-center justify-content-center">
                                     <img src="{{ asset('img/logo.png') }}" style="width: 45px" alt="">
                                     <h6 class="text-primary mt-3">E-Permit Politeknik Negeri Cilacap</h6>
-                                </a> 
+                                </a>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="number" name="nip" class="form-control" id="nip" placeholder="NIP/NPAK">
+                                <input type="number" name="nip" class="form-control" id="nip"
+                                    placeholder="NIP/NPAK">
                                 <label name="nip" for="nip">NIP/NPAK</label>
                                 @error('nip')
                                     <span class="text-danger">{{ $message }}</span>
@@ -59,11 +60,11 @@
                                     placeholder="Password">
                                 <label for="floatingPassword">Password</label>
                                 @error('password')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="d-flex items-center justify-content-end mb-2">
-                                <a href="{{route("password.request")}}" >Lupa password?</a>
+                                <a href="{{ route('password.request') }}">Lupa password?</a>
                             </div>
                             <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Masuk</button>
                         </div>

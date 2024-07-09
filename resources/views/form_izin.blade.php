@@ -1,4 +1,5 @@
 @extends('partials.app')
+
 <head>
     <meta charset="utf-8">
     <title>E-Permit PNC</title>
@@ -16,8 +17,8 @@
             @csrf
             <div class="mb-3">
                 <label class="form-label">Nama</label>
-                <input type="text" class="form-control w-50" name="nama" id="name" value="{{ Auth::user()->name }}"
-                    readonly>
+                <input type="text" class="form-control w-50" name="nama" id="name"
+                    value="{{ Auth::user()->name }}" readonly>
             </div>
             <div class="mb-3">
                 <label class="form-label">NIP/NPAK</label>
@@ -60,6 +61,15 @@
                     <option value="1">1</option>
                     <option value="2">2</option>
                 </select>
+                @if ($errors->any())
+                    <div class="alert alert-danger w-50">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
             <div class="mb-3">
                 <label class="form-label">Tanggal</label>
@@ -69,9 +79,9 @@
                 <label for="alasan" class="form-label">Alasan</label>
                 <textarea class="form-control w-50" id="alasan" name="alasan" rows="3"></textarea>
             </div>
-            <div class="mb-3">
+            <div class="mb-3 w-50">
                 <label for="formFile" class="form-label">Bukti</label>
-                <input class="form-control" class="form-control w-50" name="bukti" type="file" id="formFile">
+                <input class="form-control" class="form-control " name="bukti" type="file" id="formFile">
                 <small class="form-text text-muted"> *format file PNG dengan ukuran maksimal 2 MB</small>
             </div>
             <button type="submit" class="btn btn-primary">Kirim</button>

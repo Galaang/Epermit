@@ -19,7 +19,6 @@ class perizinan extends Controller
 
     public function insert(Request $request)
     {
-        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
             'nip' => 'required',
@@ -28,14 +27,24 @@ class perizinan extends Controller
             'unit_kerja' => 'required',
             'jenis_izin' => 'required',
             'waktu' => 'required_if:jenis_izin,Pulang lebih cepat dari waktu kepulangan kerja,Terlambat datang masuk kerja',
-            'izin_ke' => 'required',
+            'izin_ke' => 'required|integer|in:1,2',
             'tanggal' => 'required|date',
             'alasan' => 'required',
-            'bukti' => 'nullable|file|max:10240',
+            'bukti' => 'nullable|png|jpg|jpeg|max:2048',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Check if izin_ke 1 or 2 has been selected more than 2 times
+        $user = auth()->user();
+        $existingIzinCount = ModelsPerizinan::where('user_id', $user->id)
+            ->whereIn('izin_ke', [1, 2])
+            ->count();
+
+        if ($existingIzinCount >= 2) {
+            return redirect()->back()->withErrors(['izin_ke' => 'Izin ke 1 dan 2 hanya dapat dipilih sebanyak 2 kali.'])->withInput();
         }
 
         $filePath = null;
@@ -44,8 +53,6 @@ class perizinan extends Controller
         }
 
         $validatedData = $validator->validated();
-
-        $user = auth()->user();
 
         $perizinan = new ModelsPerizinan();
         $perizinan->user_id = $user->id;
@@ -65,9 +72,9 @@ class perizinan extends Controller
         $perizinan->status = 'diproses';
         $perizinan->save();
 
-
         return redirect()->route('dashboard')->with('success', 'Permohonan izin berhasil diajukan.');
     }
+
 
     public function riwayat_permohonan()
     {

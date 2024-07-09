@@ -138,4 +138,7 @@ Route::middleware(['auth', 'role:4'])->group(function () {
     Route::post('/tambah-jabatan', [pegawaiController::class, 'tambahJabatan'])->name('tambah-jabatan');
     Route::get('/jabatan', [pegawaiController::class, 'jabatan'])->name('jabatan');
     Route::post('/edit-jabatan/{id}', [pegawaiController::class, 'editJabatan'])->name('edit-jabatan');
+
+    // cetak pdf
+    Route::get('/cetakPdf', [pegawaiController::class, 'cetak'])->name('cetakPdf');
 });

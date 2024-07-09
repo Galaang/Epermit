@@ -37,12 +37,12 @@
                         <td>
                             @if ($p->status == 'Pending')
                                 <span class="badge rounded-pill bg-warning">{{ $p->status }}</span>
-                            @endif
-                            @if ($p->status == 'Disetujui')
+                            @elseif ($p->status == 'Disetujui')
                                 <span class="badge rounded-pill bg-success">{{ $p->status }}</span>
-                            @endif
-                            @if ($p->status == 'Ditolak')
+                            @elseif ($p->status == 'Ditolak')
                                 <span class="badge rounded-pill bg-danger">{{ $p->status }}</span>
+                            @else
+                                <span class="badge rounded-pill bg-secondary">{{ $p->status }}</span>
                             @endif
                         </td>
                         <td>
@@ -86,7 +86,7 @@
                                         @if ($p->bukti == null)
                                             <p>Belum ada bukti</p>
                                         @else
-                                            <img src="{{ asset('storage/' . $p->bukti) }}" class="">
+                                            <img src="{{ asset('storage/' . $p->bukti) }}" class="img-fluid">
                                         @endif
                                     </div>
                                 </div>

@@ -1,4 +1,5 @@
 @extends('partials.app')
+
 <head>
     <meta charset="utf-8">
     <title>E-Permit PNC</title>
@@ -12,6 +13,9 @@
 @section('container')
     <div class="container my-4">
         <h2 class="mb-3">Riwayat Permohonan</h2>
+        <div class="d-flex justify-content-end items-center me-3 mb-3">
+            <a href="{{ route('cetakPdf') }}" target="_blank" class="btn btn-primary">Cetak</a>
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -41,12 +45,12 @@
                         <td>
                             @if ($p->status == 'Pending')
                                 <span class="badge rounded-pill bg-warning">{{ $p->status }}</span>
-                            @endif
-                            @if ($p->status == 'Disetujui')
+                            @elseif ($p->status == 'Disetujui')
                                 <span class="badge rounded-pill bg-success">{{ $p->status }}</span>
-                            @endif
-                            @if ($p->status == 'Ditolak')
+                            @elseif ($p->status == 'Ditolak')
                                 <span class="badge rounded-pill bg-danger">{{ $p->status }}</span>
+                            @else
+                                <span class="badge rounded-pill bg-secondary">{{ $p->status }}</span>
                             @endif
                         </td>
                     </tr>

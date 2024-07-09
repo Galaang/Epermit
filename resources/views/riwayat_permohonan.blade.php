@@ -84,7 +84,7 @@
                                         @if ($p->bukti == null)
                                             <p>Belum ada bukti</p>
                                         @else
-                                            <img src="{{ asset('storage/' . $p->bukti) }}" class="">
+                                            <img src="{{ asset('storage/' . $p->bukti) }}" class="img-fluid">
                                         @endif
                                     </div>
                                 </div>

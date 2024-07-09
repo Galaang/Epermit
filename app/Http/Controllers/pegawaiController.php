@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\jabatan;
+// use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Models\perizinan;
 use App\Models\Unit_kerja;
 use Illuminate\Http\Request;
@@ -223,5 +226,19 @@ class pegawaiController extends Controller
         $jabatan->name = $request->name;
         $jabatan->save();
         return redirect()->route('jabatan')->with('success', 'Jabatan berhasil diubah');
+    }
+
+    public function cetak()
+    {
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        $perizinan = Perizinan::whereMonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pdf = PDF::loadView('baup.formPdf', ['perizinan' => $perizinan]);
+        return $pdf->stream('laporan_perizinan.pdf');
     }
 }

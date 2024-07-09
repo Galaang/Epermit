@@ -1,14 +1,15 @@
-<div class="sidebar pe-4 pb-3">
+<div class="sidebar pe-8 pb-3">
     <nav class="navbar bg-light navbar-light">
         <div class="container">
             <a href="{{ route('dashboard') }}"
-                class="navbar-brand  mb-3 d-flex align-items-center justify-content-center">
+                class="navbar-brand mb-3 d-flex align-items-center justify-content-center">
                 <img src="{{ asset('img/logo.png') }}" style="width: 48px" class="" alt="">
-                <h4 class="text-primary mt-3"></i>E-Permit PNC</h3>
+                <h3 class="text-primary mt-3"></i>E-Permit PNC</h3>
             </a>
         </div>
-        <div class="d-flex align-items-center ms-4 mb-4">
-            <div class="ms-3">
+        
+        <div class="d-flex align-items-center justify-content-center ms-4 mb-4">
+            <div class="ms-3 text-center">
                 <h6 class="mb-0">{{ Auth::user()->name }}</h6>
                 <span>{{ Auth::user()->jabatan->name }}</span>
             </div>

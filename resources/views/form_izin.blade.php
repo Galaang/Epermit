@@ -1,5 +1,14 @@
 @extends('partials.app')
+<head>
+    <meta charset="utf-8">
+    <title>E-Permit PNC</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
+    <!-- Favicon -->
+    <link href="img/logo.png" rel="icon">
+</head>
 @section('container')
     <div class="container my-4">
         <h3 class="mb-3">Formulir Permohonan Izin</h3>
@@ -16,7 +25,7 @@
                     value="{{ Auth::user()->nip }}"readonly>
             </div>
             <div class="mb-3">
-                <label class="form-label">Pangkat jabatan/Gol</label>
+                <label class="form-label">Pangkat jabatan</label>
                 <input type="text" class="form-control w-50" name="pangkat_jabatan" id="pangkat_jabatan"
                     value="{{ Auth::user()->pangkat_jabatan->name }}" readonly>
             </div>
@@ -33,7 +42,7 @@
             <div class="mb-3">
                 <label class="form-label">Jenis Izin</label>
                 <select class="form-select w-50" name="jenis_izin" id="jenisIzin" aria-label="Default select example">
-                    <option value="Tidak Masuk Kerja">Tidak Masuk Kerja</option>
+                    <option value="Tidak Masuk Kerja">Tidak masuk kerja</option>
                     <option value="Pulang lebih cepat dari waktu kepulangan kerja">Pulang lebih cepat dari waktu kepulangan
                         kerja</option>
                     <option value="Terlambat datang masuk kerja">Terlambat datang masuk kerja</option>
@@ -63,6 +72,7 @@
             <div class="mb-3">
                 <label for="formFile" class="form-label">Bukti</label>
                 <input class="form-control" class="form-control w-50" name="bukti" type="file" id="formFile">
+                <small class="form-text text-muted"> *format file PNG dengan ukuran maksimal 2 MB</small>
             </div>
             <button type="submit" class="btn btn-primary">Kirim</button>
         </form>

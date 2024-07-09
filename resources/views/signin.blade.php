@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>DASHMIN - Bootstrap Admin Template</title>
+    <title>E-Permit PNC</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="img/logo.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,13 +40,12 @@
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                     <form action="{{ route('login') }}" method="POST">
                         @csrf
-                        <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+                       <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
                             <div class="d-flex align-items-center justify-content-between mb-3">
                                 <a href="index.html" class="d-flex align-items-center justify-content-center">
-                                    <img src="{{ asset('img/logo.png') }}" style="width: 48px" alt="">
-                                    <h3 class="text-primary mt-3">EPERMIT</h3>
-                                </a>
-                                <h3>Sign In</h3>
+                                    <img src="{{ asset('img/logo.png') }}" style="width: 45px" alt="">
+                                    <h6 class="text-primary mt-3">E-Permit Politeknik Negeri Cilacap</h6>
+                                </a> 
                             </div>
                             <div class="form-floating mb-3">
                                 <input type="number" name="nip" class="form-control" id="nip" placeholder="NIP/NPAK">
@@ -66,7 +65,7 @@
                             <div class="d-flex items-center justify-content-end mb-2">
                                 <a href="{{route("password.request")}}" >Lupa password?</a>
                             </div>
-                            <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
+                            <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Masuk</button>
                         </div>
                     </form>
                 </div>

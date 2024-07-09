@@ -13,7 +13,7 @@
                         value="{{ old('name', Auth::user()->name) }}">
                 </div>
                 <div class="mb-3">
-                    <label for="nip" class="form-label">NIDN/NPAK</label>
+                    <label for="nip" class="form-label">NIP/NPAK</label>
                     <input type="text" class="form-control" id="nip" name="nip"
                         value="{{ old('nip', Auth::user()->nip) }}">
                 </div>

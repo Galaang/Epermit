@@ -1,5 +1,14 @@
 @extends('partials.app')
+<head>
+    <meta charset="utf-8">
+    <title>E-Permit PNC</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
+    <!-- Favicon -->
+    <link href="img/logo.png" rel="icon">
+</head>
 @section('container')
     <div class="container my-4">
         <h3 class="mb-3">Pegawai</h3>
@@ -13,7 +22,7 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Nama Jabatan</th>
+                    <th scope="col">Nama Pegawai</th>
                     <th scope="col">NIP/NPAK</th>
                     <th scope="col">Pangkat Jabatan</th>
                     <th scope="col">Jabatan</th>

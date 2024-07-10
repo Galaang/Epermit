@@ -1,4 +1,5 @@
 @extends('partials.app')
+
 <head>
     <meta charset="utf-8">
     <title>E-Permit PNC</title>
@@ -20,7 +21,7 @@
                         <i class="bi bi-clipboard-fill fa-2x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">Permohonan Izin</p>
-                            <h6 class="mb-0">{{$total_perizinan}}</h6>
+                            <h6 class="mb-0">{{ $total_perizinan }}</h6>
                         </div>
                     </div>
                 </div>
@@ -29,7 +30,7 @@
                         <i class="bi bi-clipboard-check-fill fa-2x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">Izin Disetujui</p>
-                            <h6 class="mb-0">{{$perizinan_disetujui}}</h6>
+                            <h6 class="mb-0">{{ $perizinan_disetujui }}</h6>
                         </div>
                     </div>
                 </div>
@@ -38,7 +39,7 @@
                         <i class="bi bi-clipboard-minus-fill fa-2x text-primary"></i>
                         <div class="ms-3">
                             <p class="mb-2">Izin Ditolak</p>
-                            <h6 class="mb-0">{{$perizinan_ditolak}}</h6>
+                            <h6 class="mb-0">{{ $perizinan_ditolak }}</h6>
                         </div>
                     </div>
                 </div>
@@ -92,7 +93,17 @@
                                 @endif
                                 <td>{{ $p->tanggal }}</td>
                                 <td>{{ $p->alasan }}</td>
-                                <td>{{ $p->status }}</td>
+                                <td>
+                                    @if ($p->status == 'Pending')
+                                        <span class="badge rounded-pill bg-warning">{{ $p->status }}</span>
+                                    @elseif ($p->status == 'Disetujui')
+                                        <span class="badge rounded-pill bg-success">{{ $p->status }}</span>
+                                    @elseif ($p->status == 'Ditolak')
+                                        <span class="badge rounded-pill bg-danger">{{ $p->status }}</span>
+                                    @else
+                                        <span class="badge rounded-pill bg-secondary">{{ $p->status }}</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#bukti{{ $p->id }}">
@@ -101,8 +112,8 @@
                                 </td>
                                 <td>
                                     @if ($p->status == 'Disetujui')
-                                        <button type="button" disabled class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#editStatus{{ $p->id }}">
+                                        <button type="button" disabled class="btn btn-primary btn-sm"
+                                            data-bs-toggle="modal" data-bs-target="#editStatus{{ $p->id }}">
                                             Edit
                                         </button>
                                     @else

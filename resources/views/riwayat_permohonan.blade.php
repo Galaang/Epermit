@@ -1,4 +1,5 @@
 @extends('partials.app')
+
 <head>
     <meta charset="utf-8">
     <title>E-Permit PNC</title>
@@ -40,17 +41,14 @@
                         <td>{{ $p->tanggal }}</td>
                         <td>{{ $p->alasan }}</td>
                         <td>
-                        @if ($p->status == 'diproses')
-                                <span class="badge rounded-pill bg-warning">{{ $p->status }}</span>
-                            @endif
                             @if ($p->status == 'Pending')
                                 <span class="badge rounded-pill bg-warning">{{ $p->status }}</span>
-                            @endif
-                            @if ($p->status == 'Disetujui')
+                            @elseif ($p->status == 'Disetujui')
                                 <span class="badge rounded-pill bg-success">{{ $p->status }}</span>
-                            @endif
-                            @if ($p->status == 'Ditolak')
+                            @elseif ($p->status == 'Ditolak')
                                 <span class="badge rounded-pill bg-danger">{{ $p->status }}</span>
+                            @else
+                                <span class="badge rounded-pill bg-secondary">{{ $p->status }}</span>
                             @endif
                         </td>
                         <td>
@@ -61,11 +59,22 @@
                             @if ($p->status == 'Disetujui')
                                 <button href="#" disabled type="button" data-bs-toggle="modal"
                                     data-bs-target="#editModal{{ $p->id }}" class="btn btn-primary btn-sm">Edit
-                                    </but>
-                                @else
-                                    <button href="#" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#editModal{{ $p->id }}"
-                                        class="btn btn-primary btn-sm">Edit</button>
+                                </button>
+                            @else
+                                <button href="#" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#editModal{{ $p->id }}"
+                                    class="btn btn-primary btn-sm">Edit</button>
+                            @endif
+                            @if ($p->status == 'Dibatalkan')
+                                <form action="{{ route('form-batal', $p->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" disabled class="btn btn-danger btn-sm mt-2">Batal</button>
+                                </form>
+                            @else
+                                <form action="{{ route('form-batal', $p->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-sm mt-2">Batal</button>
+                                </form>
                             @endif
                         </td>
                     </tr>

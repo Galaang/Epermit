@@ -111,6 +111,7 @@ Route::middleware(['auth', 'role:1,2,3,4'])->group(function () {
     Route::get('/riwayat_permohonan', [perizinan::class, 'riwayat_permohonan'])->name('riwayat_permohonan');
     Route::post('/edit-respon/{id}', [perizinan::class, 'editRespon'])->name('edit_respon');
     Route::match(['get', 'post'], '/update/data_permohonan/{id}', [perizinan::class, 'update'])->name('update');
+    Route::post('/form-batal/{id}', [perizinan::class, 'pembatalan'])->name('form-batal');
 });
 
 Route::middleware(['auth', 'role:4'])->group(function () {

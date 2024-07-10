@@ -201,4 +201,11 @@ class perizinan extends Controller
         // Redirect kembali ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Data perizinan berhasil diupdate.');
     }
+
+    public function pembatalan($id)
+    {
+        $perizinan = ModelsPerizinan::findOrFail($id);
+        $perizinan = ModelsPerizinan::where('id', $id)->update(['status' => 'Dibatalkan']);
+        return redirect()->back()->with('success', 'Data perizinan berhasil dibatalkan.');
+    }
 }

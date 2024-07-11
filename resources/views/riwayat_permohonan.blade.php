@@ -18,7 +18,7 @@
                 <tr>
                     <th scope="col">No</th>
                     <th scope="col">Nama</th>
-                    <th scope="col">NIP/NPAK</th>
+                    <th scope="col">NIP</th>
                     <th scope="col">Jabatan</th>
                     <th scope="col">Jenis Izin</th>
                     <th scope="col">Waktu</th>
@@ -126,7 +126,7 @@
                                                 value="{{ $p->nama }}" readonly>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">NIP/NPAK</label>
+                                            <label class="form-label">NIP</label>
                                             <input type="number" class="form-control" name="nip"
                                                 value="{{ $p->nip }}" readonly>
                                         </div>

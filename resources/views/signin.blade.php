@@ -49,8 +49,8 @@
                             </div>
                             <div class="form-floating mb-3">
                                 <input type="number" name="nip" class="form-control" id="nip"
-                                    placeholder="NIP/NPAK">
-                                <label name="nip" for="nip">NIP/NPAK</label>
+                                    placeholder="NIP">
+                                <label name="nip" for="nip">NIP</label>
                                 @error('nip')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror

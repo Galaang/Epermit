@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
-
 class perizinan extends Controller
 {
     public function form_izin()
@@ -164,7 +163,7 @@ class perizinan extends Controller
             'izin_ke' => 'required|integer',
             'tanggal' => 'required|date',
             'alasan' => 'required|string',
-            'bukti' => 'nullable|file|max:10240', // Tambahkan batas maksimal ukuran file 10MB
+            'bukti' => 'nullable|file|mimes:png,jpg,jpeg|max:5120', // Tambahkan batas maksimal ukuran file 5MB
         ]);
 
         // Set waktu ke null jika jenis izin adalah 'Tidak Masuk Kerja'

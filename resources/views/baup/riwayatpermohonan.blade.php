@@ -21,7 +21,7 @@
                 <tr>
                     <th scope="col">No</th>
                     <th scope="col">Nama</th>
-                    <th scope="col">NIP/NPAK</th>
+                    <th scope="col">NIP</th>
                     <th scope="col">Jabatan</th>
                     <th scope="col">Jenis Izin</th>
                     <th scope="col">Waktu</th>

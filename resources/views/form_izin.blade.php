@@ -21,7 +21,7 @@
                     value="{{ Auth::user()->name }}" readonly>
             </div>
             <div class="mb-3">
-                <label class="form-label">NIP/NPAK</label>
+                <label class="form-label">NIP</label>
                 <input type="number" class="form-control w-50" name="nip" id="nip"
                     value="{{ Auth::user()->nip }}"readonly>
             </div>
@@ -82,7 +82,7 @@
             <div class="mb-3 w-50">
                 <label for="formFile" class="form-label">Bukti</label>
                 <input class="form-control" class="form-control " name="bukti" type="file" id="formFile">
-                <small class="form-text text-muted"> *format file PNG dengan ukuran maksimal 2 MB</small>
+                <small class="form-text text-muted"> *format file PNG/JPG/JPEG dengan ukuran maksimal 5 MB</small>
             </div>
             <button type="submit" class="btn btn-primary">Kirim</button>
         </form>

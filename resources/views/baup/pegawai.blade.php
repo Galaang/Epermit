@@ -23,7 +23,7 @@
                 <tr>
                     <th scope="col">No</th>
                     <th scope="col">Nama Pegawai</th>
-                    <th scope="col">NIP/NPAK</th>
+                    <th scope="col">NIP</th>
                     <th scope="col">Pangkat Jabatan</th>
                     <th scope="col">Jabatan</th>
                     <th scope="col">Unit Kerja</th>
@@ -66,7 +66,7 @@
                                             <input type="text" class="form-control" name="name" id="name" value="{{ $p->name }}">
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">NIP/NPAK</label>
+                                            <label class="form-label">NIP</label>
                                             <input type="number" class="form-control" name="nip" id="nip" value="{{ $p->nip }}">
                                         </div>
                                         <div class="mb-3">
@@ -126,11 +126,11 @@
                                 <input type="text" class="form-control" name="name" id="name">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">NIP/NPAK</label>
+                                <label class="form-label">NIP</label>
                                 <input type="number" class="form-control" name="nip" id="nip">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Pangkat jabatan/Gol</label>
+                                <label class="form-label">Pangkat jabatan</label>
                                 <select class="form-select" name="pangkat_jabatan_id" id="pangkat_jabatan"
                                     aria-label="jabatan">
                                     @foreach ($pangkat as $p)

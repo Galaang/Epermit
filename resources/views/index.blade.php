@@ -55,7 +55,8 @@
                 <li>Terlambat datang masuk kerja</li>
             </ul>
             2. Permohonan izin maksimal dilakukan 2 kali selama 1 bulan per setiap jenis izin.<br>
-            3. Apabila izin pulang lebih cepat & izin terlambat datang harus menyertakan waktu.
+            3. Apabila izin pulang lebih cepat & izin terlambat datang harus menyertakan waktu.<br>
+            4. Izin dapat dibatalkan jika belum dilaksanakan sesuai waktu yang diajukan.
             </p>
         </div>
 

@@ -15,6 +15,15 @@
         <h3 class="mb-3">Formulir Permohonan Izin</h3>
         <form action="{{ route('form-insert') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @if ($errors->any())
+                <div class="alert alert-danger w-50">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="mb-3">
                 <label class="form-label">Nama</label>
                 <input type="text" class="form-control w-50" name="nama" id="name"
@@ -61,15 +70,6 @@
                     <option value="1">1</option>
                     <option value="2">2</option>
                 </select>
-                @if ($errors->any())
-                    <div class="alert alert-danger w-50">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
             </div>
             <div class="mb-3">
                 <label class="form-label">Tanggal</label>
@@ -89,8 +89,18 @@
     </div>
 @endsection
 
-
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var today = new Date();
+        var day = ("0" + today.getDate()).slice(-2);
+        var month = ("0" + (today.getMonth() + 1)).slice(-2);
+        var todayString = today.getFullYear() + "-" + month + "-" + day;
+        document.getElementById("tanggal").setAttribute("min", todayString);
+    });
+</script>
+
 <script>
     $(document).ready(function() {
         $('#jenisIzin').change(function() {
@@ -116,11 +126,3 @@
         });
     </script>
 @endif
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-    // $(document).ready(function() {
-    //     $('#jenisIzin').select2();
-    // });
-</script>

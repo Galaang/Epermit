@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\perizinan as ModelsPerizinan;
-use Illuminate\Auth\Events\Validated;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use App\Models\perizinan as ModelsPerizinan;
 
 class perizinan extends Controller
 {
@@ -27,23 +28,61 @@ class perizinan extends Controller
             'jenis_izin' => 'required',
             'waktu' => 'required_if:jenis_izin,Pulang lebih cepat dari waktu kepulangan kerja,Terlambat datang masuk kerja',
             'izin_ke' => 'required|integer|in:1,2',
-            'tanggal' => 'required|date',
+            'tanggal' => ['required', 'date', function ($attribute, $value, $fail) {
+                $today = Carbon::today();
+                $requestedDate = Carbon::parse($value);
+                if (!$requestedDate->isSameDay($today->subDay()) && !$requestedDate->isSameDay($today) && !$requestedDate->isSameDay($today->addDay())) {
+                    $fail('Tanggal izin harus satu hari sebelum, hari ini, atau satu hari setelah tanggal hari ini.');
+                }
+            }],
             'alasan' => 'required',
-            'bukti' => 'nullable|png|jpg|jpeg|max:2048',
+            'bukti' => 'nullable|mimes:jpg,jpeg,png|max:5120',
         ]);
+
+        $validator->after(function ($validator) use ($request) {
+            if ($request->jenis_izin == 'Pulang lebih cepat dari waktu kepulangan kerja') {
+                $requestedDate = Carbon::parse($request->tanggal);
+                $requestedTime = Carbon::parse($request->waktu);
+                $currentDateTime = Carbon::now();
+
+                // Validasi agar izin tidak bisa dilakukan jika waktu yang diminta sudah terlewati pada hari yang sama
+                if ($requestedDate->isToday() && $requestedTime->lessThan($currentDateTime)) {
+                    $validator->errors()->add('waktu', 'Izin pulang lebih cepat hanya bisa dilakukan sebelum waktu yang diminta.');
+                }
+            }
+        });
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Check if izin_ke 1 or 2 has been selected more than 2 times
-        $user = auth()->user();
+        // Check if izin ke-1 has already been selected
+        $user = Auth::user();
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        if ($request->izin_ke == 1) {
+            $existingIzinKe1Count = ModelsPerizinan::where('user_id', $user->id)
+                ->where('jenis_izin', $request->jenis_izin)
+                ->where('izin_ke', 1)
+                ->whereMonth('created_at', $currentMonth)
+                ->whereYear('created_at', $currentYear)
+                ->count();
+
+            if ($existingIzinKe1Count > 0) {
+                return redirect()->back()->withErrors(['izin_ke' => 'Izin ke-1 sudah diajukan sebelumnya dan tidak bisa diajukan lagi.'])->withInput();
+            }
+        }
+
+        // Check if each jenis_izin has been selected more than 2 times in the current month
         $existingIzinCount = ModelsPerizinan::where('user_id', $user->id)
-            ->whereIn('izin_ke', [1, 2])
+            ->whereMonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+            ->where('jenis_izin', $request->jenis_izin)
             ->count();
 
         if ($existingIzinCount >= 2) {
-            return redirect()->back()->withErrors(['izin_ke' => 'Izin ke 1 dan 2 hanya dapat dipilih sebanyak 2 kali.'])->withInput();
+            return redirect()->back()->withErrors(['jenis_izin' => 'Izin ' . $request->jenis_izin . ' hanya dapat dipilih sebanyak 2 kali dalam 1 bulan.'])->withInput();
         }
 
         $filePath = null;
@@ -68,11 +107,12 @@ class perizinan extends Controller
         if ($filePath) {
             $perizinan->bukti = $filePath;
         }
-        $perizinan->status = 'diproses';
+        $perizinan->status = 'Diproses';
         $perizinan->save();
 
         return redirect()->route('dashboard')->with('success', 'Permohonan izin berhasil diajukan.');
     }
+
 
 
     public function riwayat_permohonan()

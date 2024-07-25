@@ -56,9 +56,9 @@ class Auth_controller extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' .  $user->id,
-            'nip' => 'required|numeric',
+            'name' => 'required|string|max:50',
+            'email' => 'required|string|email|max:50|unique:users,email,' .  $user->id,
+            'nip' => 'required|numeric|max:18|unique:users,nip',
             'password_lama' => 'nullable|string',
             'password_baru' => 'nullable|string',
         ]);

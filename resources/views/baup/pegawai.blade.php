@@ -23,7 +23,7 @@
                 <tr>
                     <th scope="col">No</th>
                     <th scope="col">Nama Pegawai</th>
-                    <th scope="col">NIP</th>
+                    <th scope="col">NIP/NPAK</th>
                     <th scope="col">Pangkat Jabatan</th>
                     <th scope="col">Jabatan</th>
                     <th scope="col">Unit Kerja</th>
@@ -48,6 +48,7 @@
                                 <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                             </form>
                         </td>
+                        
                     </tr>
                     {{-- modal edit pegawai --}}
                     <div class="modal fade" id="editpegawai{{ $p->id }}" tabindex="-1" aria-hidden="true">
@@ -66,11 +67,11 @@
                                             <input type="text" class="form-control" name="name" id="name" value="{{ $p->name }}">
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">NIP</label>
+                                            <label class="form-label">NIP/NPAK</label>
                                             <input type="number" class="form-control" name="nip" id="nip" value="{{ $p->nip }}">
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Pangkat jabatan/Gol</label>
+                                            <label class="form-label">Pangkat jabatan</label>
                                             <select class="form-select" name="pangkat_jabatan_id" id="pangkat_jabatans"
                                                 aria-label="jabatan">
                                                 @foreach ($pangkat as $p)
@@ -97,7 +98,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
+                                                data-bs-dismiss="modal">Tutup</button>
                                             <button type="submit" class="btn btn-primary">Simpan</button>
                                         </div>
                                     </form>
@@ -115,7 +116,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Jabatan</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Pegawai</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -126,7 +127,7 @@
                                 <input type="text" class="form-control" name="name" id="name">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">NIP</label>
+                                <label class="form-label">NIP/NPAK</label>
                                 <input type="number" class="form-control" name="nip" id="nip">
                             </div>
                             <div class="mb-3">
@@ -156,7 +157,7 @@
                                 </select>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </form>

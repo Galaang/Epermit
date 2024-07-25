@@ -64,6 +64,7 @@
                     <input type="time" class="form-control w-50" id="waktu" name="waktu">
                 </div>
             </div>
+            
             <div class="mb-3">
                 <label class="form-label">Izin ke-</label>
                 <select class="form-select w-50" name="izin_ke" aria-label="Default select example">
@@ -84,7 +85,7 @@
                 <input class="form-control" class="form-control " name="bukti" type="file" id="formFile">
                 <small class="form-text text-muted"> *format file PNG/JPG/JPEG dengan ukuran maksimal 5 MB</small>
             </div>
-            <button type="submit" class="btn btn-primary">Kirim</button>
+            <button type="submit" onclick="validateTime()" class="btn btn-primary">Kirim</button>
         </form>
     </div>
 @endsection
@@ -100,6 +101,44 @@
         document.getElementById("tanggal").setAttribute("min", todayString);
     });
 </script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var now = new Date();
+            var hours = ("0" + now.getHours()).slice(-2);
+            var minutes = ("0" + now.getMinutes()).slice(-2);
+            var currentTime = hours + ":" + minutes;
+            document.getElementById("waktu").setAttribute("min", currentTime);
+        });
+
+        function validateTime() {
+            const inputTime = document.getElementById('waktu').value;
+            const errorMessage = document.getElementById('error-message');
+
+            if (!inputTime) {
+                errorMessage.textContent = 'Silakan masukkan waktu';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const inputDate = new Date();
+            const [inputHours, inputMinutes] = inputTime.split(':');
+            inputDate.setHours(parseInt(inputHours));
+            inputDate.setMinutes(parseInt(inputMinutes));
+
+            const currentDate = new Date();
+
+            if (inputDate <= currentDate) {
+                errorMessage.textContent = 'Waktu harus setelah waktu saat ini';
+                errorMessage.style.display = 'block';
+            } else {
+                errorMessage.style.display = 'none';
+                alert('Waktu valid!');
+                // Lakukan tindakan jika waktu valid
+            }
+        }
+    </script>
+
 
 <script>
     $(document).ready(function() {

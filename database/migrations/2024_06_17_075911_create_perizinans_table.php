@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('perizinans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('nama');
-            $table->string('nip');
-            $table->string('pangkat_jabatan');
-            $table->string('jabatan');
-            $table->string('unit_kerja');
+            $table->string('nama',50);
+            $table->string('nip',18);
+            $table->string('pangkat_jabatan',50);
+            $table->string('jabatan',50);
+            $table->string('unit_kerja',50);
             $table->string('jenis_izin');
             $table->time('waktu')->nullable();
             $table->integer('izin_ke');
             $table->date('tanggal');
-            $table->string('alasan');
+            $table->string('alasan',50);
             $table->string('status');
             $table->string('bukti')->nullable();
             $table->timestamps();

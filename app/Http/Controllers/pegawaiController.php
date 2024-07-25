@@ -32,11 +32,15 @@ class pegawaiController extends Controller
         // Validasi input
         $request->validate([
             'name' => 'required',
-            'nip' => 'required',
+            'nip' => 'required|unique:users,nip',
             'pangkat_jabatan_id' => 'required',
             'jabatan_id' => 'required',
             'unit_id' => 'required',
+        ], [
+            'nip.unique' => 'NIP sudah terdaftar, silakan gunakan NIP yang berbeda.',
         ]);
+
+        
 
         // Menentukan role berdasarkan jabatan_id
         $role = 0; // nilai awal
@@ -152,7 +156,7 @@ class pegawaiController extends Controller
     {
         // Validasi input
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:50',
         ]);
 
         // Cek apakah unit kerja dengan ID yang diberikan ada

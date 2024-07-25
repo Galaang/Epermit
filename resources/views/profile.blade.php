@@ -1,8 +1,19 @@
 @extends('partials.app')
 
+<head>
+    <meta charset="utf-8">
+    <title>E-Permit PNC</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/logo.png" rel="icon">
+</head>
+
 @section('container')
     <div class="container my-4">
-        <h1 class="mb-3">Profile</h1>
+        <h3 class="mb-3">Profil</h3>
         <form action="{{ route('edit_profile') }}" method="POST">
             @csrf
             {{-- @method('PUT') --}}

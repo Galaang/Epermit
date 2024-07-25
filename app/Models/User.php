@@ -10,7 +10,6 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
-
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -31,7 +30,7 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function role(): BelongsTo
+    public function role(): BelongsTo  //untuk relasi ke tabel role
     {
         return $this->belongsTo(Role::class);
     }

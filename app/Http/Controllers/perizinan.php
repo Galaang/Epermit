@@ -32,11 +32,11 @@ class perizinan extends Controller
                 $today = Carbon::today();
                 $requestedDate = Carbon::parse($value);
                 if (!$requestedDate->isSameDay($today->subDay()) && !$requestedDate->isSameDay($today) && !$requestedDate->isSameDay($today->addDay())) {
-                    $fail('Tanggal izin harus satu hari sebelum, hari ini, atau satu hari setelah tanggal hari ini.');
+                    // $fail('Tanggal izin harus satu hari sebelum, hari ini, atau satu hari setelah tanggal hari ini.');
                 }
             }],
             'alasan' => 'required',
-            'bukti' => 'nullable|mimes:jpg,jpeg,png|max:5120',
+            'bukti' => 'required|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         $validator->after(function ($validator) use ($request) {
@@ -70,7 +70,7 @@ class perizinan extends Controller
                 ->count();
 
             if ($existingIzinKe1Count > 0) {
-                return redirect()->back()->withErrors(['izin_ke' => 'Izin ke-1 sudah diajukan sebelumnya dan tidak bisa diajukan lagi.'])->withInput();
+                return redirect()->back()->withErrors(['izin_ke' => 'Izin ke-1 sudah pernah diajukan, pilih izin ke-2.'])->withInput();
             }
         }
 
@@ -109,10 +109,9 @@ class perizinan extends Controller
         }
         $perizinan->status = 'Diproses';
         $perizinan->save();
-
-        return redirect()->route('dashboard')->with('success', 'Permohonan izin berhasil diajukan.');
+        
+        return redirect()->back()->with('success', 'Permohonan izin berhasil diajukan.');
     }
-
 
 
     public function riwayat_permohonan()
@@ -174,6 +173,7 @@ class perizinan extends Controller
         $perizinan = ModelsPerizinan::where('status', 'Pending')->get();
 
         return view('wadir.data_permohonanWd2', compact('perizinan'));
+        
     }
 
 

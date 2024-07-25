@@ -50,7 +50,7 @@
                             <div class="form-floating mb-3">
                                 <input type="number" name="nip" class="form-control" id="nip"
                                     placeholder="NIP">
-                                <label name="nip" for="nip">NIP</label>
+                                <label name="nip" for="nip">NIP/NPAK</label>
                                 @error('nip')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror

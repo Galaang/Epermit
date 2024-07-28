@@ -56,7 +56,7 @@
                                 data-bs-target="#bukti{{ $p->id }}" class="btn btn-secondary btn-sm">Lihat</a>
                         </td>
                         <td>
-                            @if ($p->status == 'Disetujui')
+                            @if ($p->status == 'Disetujui' || $p->status == 'Pending')
                                 <button href="#" disabled type="button" data-bs-toggle="modal"
                                     data-bs-target="#editModal{{ $p->id }}" class="btn btn-primary btn-sm">Edit
                                 </button>
@@ -65,7 +65,7 @@
                                     data-bs-target="#editModal{{ $p->id }}"
                                     class="btn btn-primary btn-sm">Edit</button>
                             @endif
-                            @if ($p->status == 'Dibatalkan')
+                            @if ($p->status == 'Dibatalkan' || $p->status == 'Pending')
                                 <form action="{{ route('form-batal', $p->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" disabled class="btn btn-danger btn-sm mt-2">Batal</button>

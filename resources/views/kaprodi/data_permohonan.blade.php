@@ -53,20 +53,39 @@
                         </td>
                         <td>
                             <div class="d-flex flex-column">
+                                @if ($p->status == 'Pending' || $p->status == 'Ditolak')    
+                                <form action="{{ route('edit_respon', $p->id) }}" method="POST" class="d-flex">
+                                    @csrf
+                                    <input type="hidden" name="status" value="Pending">
+                                    <button type="submit" disabled class="btn btn-primary btn-sm mb-2">
+                                        Disetujui
+                                    </button>
+                                    
+                                </form>
+                                <form action="{{ route('tolakizin', $p->id) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="status" value="Ditolak">
+                                    <button type="submit" disabled class="btn btn-danger btn-sm mb-2">
+                                        Ditolak
+                                    </button>
+                                </form>
+                                @else
                                 <form action="{{ route('edit_respon', $p->id) }}" method="POST" class="d-flex">
                                     @csrf
                                     <input type="hidden" name="status" value="Pending">
                                     <button type="submit" class="btn btn-primary btn-sm mb-2">
                                         Disetujui
                                     </button>
+                                    
                                 </form>
-                                <form action="{{ route('edit_respon', $p->id) }}" method="POST">
+                                <form action="{{ route('tolakizin', $p->id) }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="status" value="Ditolak">
                                     <button type="submit" class="btn btn-danger btn-sm mb-2">
                                         Ditolak
                                     </button>
                                 </form>
+                                @endif
                             </div>
                         </td>
                     </tr>

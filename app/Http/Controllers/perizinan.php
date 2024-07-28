@@ -3,18 +3,51 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
+use App\Mail\IzinDiajukan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Models\perizinan as ModelsPerizinan;
+use App\Models\Unit_kerja;
 
 class perizinan extends Controller
 {
     public function form_izin()
     {
-        return view('form_izin');
+        $user = Auth::user();
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        $izinData = [];
+
+        $jenisIzinList = [
+            'Tidak Masuk Kerja',
+            'Pulang lebih cepat dari waktu kepulangan kerja',
+            'Terlambat datang masuk kerja'
+        ];
+
+        foreach ($jenisIzinList as $jenisIzin) {
+            $izinData[$jenisIzin]['izin_ke_1'] = ModelsPerizinan::where('user_id', $user->id)
+                ->where('jenis_izin', $jenisIzin)
+                ->where('izin_ke', 1)
+                ->whereMonth('created_at', $currentMonth)
+                ->whereYear('created_at', $currentYear)
+                ->exists();
+
+            $izinData[$jenisIzin]['izin_ke_2'] = ModelsPerizinan::where('user_id', $user->id)
+                ->where('jenis_izin', $jenisIzin)
+                ->where('izin_ke', 2)
+                ->whereMonth('created_at', $currentMonth)
+                ->whereYear('created_at', $currentYear)
+                ->exists();
+        }
+
+
+        return view('form_izin', compact('izinData'));
     }
 
     public function insert(Request $request)
@@ -85,9 +118,31 @@ class perizinan extends Controller
             return redirect()->back()->withErrors(['jenis_izin' => 'Izin ' . $request->jenis_izin . ' hanya dapat dipilih sebanyak 2 kali dalam 1 bulan.'])->withInput();
         }
 
+
         $filePath = null;
         if ($request->hasFile('bukti')) {
             $filePath = $request->file('bukti')->store('bukti_perizinan');
+        }
+
+        // Ambil data unit berdasarkan unit_id dari user
+
+        $unit = Unit_kerja::where('id', $user->unit_id)->first();
+
+        if (!$unit) {
+            return redirect()->back()->withErrors(['unit_id' => 'Unit tidak valid atau tidak ditemukan.'])->withInput();
+        }
+
+        // Ambil data ketua prodi berdasarkan unit_id
+        $ketuaProdi = User::where('unit_id', $user->unit_id)
+            ->where('jabatan_id', 2)
+            ->first();
+        if (!$ketuaProdi) {
+            return redirect()->back()->withErrors(['unit_id' => 'Ketua Prodi tidak ditemukan untuk unit ini.'])->withInput();
+        }
+
+        $emailKetuaProdi = $ketuaProdi->email;
+        if (empty($emailKetuaProdi)) {
+            return redirect()->back()->withErrors(['email' => 'Email Ketua Prodi tidak ditemukan.'])->withInput();
         }
 
         $validatedData = $validator->validated();
@@ -109,7 +164,21 @@ class perizinan extends Controller
         }
         $perizinan->status = 'Diproses';
         $perizinan->save();
-        
+
+        // Mengirim email
+        $details = [
+            'nama' => $validatedData['nama'],
+            'nip' => $validatedData['nip'],
+            'pangkat_jabatan' => $validatedData['pangkat_jabatan'],
+            'jabatan' => $validatedData['jabatan'],
+            'unit_kerja' => $validatedData['unit_kerja'],
+            'jenis_izin' => $validatedData['jenis_izin'],
+            'waktu' => $validatedData['waktu'],
+            'alasan' => $validatedData['alasan']
+        ];
+
+        Mail::to($emailKetuaProdi)->send(new IzinDiajukan($details));
+
         return redirect()->back()->with('success', 'Permohonan izin berhasil diajukan.');
     }
 
@@ -173,11 +242,42 @@ class perizinan extends Controller
         $perizinan = ModelsPerizinan::where('status', 'Pending')->get();
 
         return view('wadir.data_permohonanWd2', compact('perizinan'));
-        
     }
 
 
     public function editRespon(Request $request, $id)
+    {
+        $perizinan = ModelsPerizinan::findOrFail($id);
+        $perizinan->status = $request->input('status');
+        $perizinan->save();
+
+        $wadir = User::where('jabatan_id', 5)->first();
+        $emailwadir = $wadir->email;
+
+        // Mengirim email
+        $details = [
+            'nama' => $perizinan->user->name,
+            'nip' => $perizinan->user->nip,
+            'pangkat_jabatan' => $perizinan->user->pangkat_jabatan->name,
+            'jabatan' => $perizinan->user->jabatan->name,
+            'unit_kerja' => $perizinan->user->unit->name,
+            'jenis_izin' => $perizinan->jenis_izin,
+            'waktu' => $perizinan->waktu,
+            'alasan' => $perizinan->alasan
+        ];
+        Mail::to($emailwadir)->send(new IzinDiajukan($details));
+        return redirect()->back()->with('success', 'status berhasil diupdate.');
+    }
+
+    public function tolakizin(Request $request, $id)
+    {
+        $perizinan = ModelsPerizinan::findOrFail($id);
+        $perizinan->status = $request->input('status');
+        $perizinan->save();
+        return redirect()->back()->with('success', 'status berhasil diupdate.');
+    }
+
+    public function editResponwd(Request $request, $id)
     {
         $perizinan = ModelsPerizinan::findOrFail($id);
         $perizinan->status = $request->input('status');

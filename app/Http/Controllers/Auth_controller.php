@@ -57,26 +57,26 @@ class Auth_controller extends Controller
 
         $request->validate([
             'name' => 'required|string|max:50',
-            'email' => 'required|string|email|max:50|unique:users,email,' .  $user->id,
-            'nip' => 'required|numeric|max:18|unique:users,nip',
+            'email' => 'required|string|email|max:50|unique:users,email,' . $user->id,
+            'nip' => 'required|digits_between:1,18|unique:users,nip,' . $user->id,
             'password_lama' => 'nullable|string',
-            'password_baru' => 'nullable|string',
+            'password_baru' => 'nullable|string|min:8|confirmed',
         ]);
 
         // Memeriksa apakah password lama benar
-        if (!is_null($request->password_lama) && !Hash::check($request->password_lama, $user->password)) {
+        if ($request->filled('password_lama') && !Hash::check($request->password_lama, $user->password)) {
             return back()->withErrors(['password_lama' => 'Password lama yang Anda masukkan salah.'])->withInput();
         }
 
         // Memeriksa apakah password baru benar
-        if (!is_null($request->password_baru) && $request->password_baru === $request->password_lama) {
+        if ($request->filled('password_baru') && $request->password_baru === $request->password_lama) {
             return back()->withErrors(['password_baru' => 'Password baru yang Anda masukkan sama dengan password lama.'])->withInput();
         }
 
-        if (!is_null($request->password_baru)) {
+        // Mengupdate password jika diberikan
+        if ($request->filled('password_baru')) {
             $user->password = Hash::make($request->password_baru);
         }
-
 
         // Mengupdate data user
         $user->name = $request->name;

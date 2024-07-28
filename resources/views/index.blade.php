@@ -111,10 +111,17 @@
                                     </button>
                                 </td>
                                 <td>
+                                    @if ($p->status == 'Pending' || $p->status == 'Disetujui' || $p->status == 'Ditolak') 
+                                        <button type="button" disabled class="btn btn-primary btn-sm"
+                                            data-bs-toggle="modal" data-bs-target="#editModal{{ $p->id }}">
+                                            Edit
+                                        </button>
+                                    @else
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#editModal{{ $p->id }}">
                                             Edit
                                         </button>
+                                    @endif
                                 </td>
                             </tr>
                             {{-- Modal bukti --}}
@@ -146,104 +153,110 @@
                             {{-- Modal bukti --}}
 
                             {{-- Modal --}}
-                    <div class="modal fade" id="editModal{{ $p->id }}" tabindex="-1"
-                        aria-labelledby="editModalLabel{{ $p->id }}" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="editModalLabel{{ $p->id }}">Edit Permohonan
-                                    </h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('update', $p->id) }}" method="POST"
-                                        enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="mb-3">
-                                            <label class="form-label">Nama</label>
-                                            <input type="text" class="form-control" name="nama"
-                                                value="{{ $p->nama }}" readonly>
+                            <div class="modal fade" id="editModal{{ $p->id }}" tabindex="-1"
+                                aria-labelledby="editModalLabel{{ $p->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="editModalLabel{{ $p->id }}">Edit
+                                                Permohonan
+                                            </h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">NIP</label>
-                                            <input type="number" class="form-control" name="nip"
-                                                value="{{ $p->nip }}" readonly>
+                                        <div class="modal-body">
+                                            <form action="{{ route('update', $p->id) }}" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="mb-3">
+                                                    <label class="form-label">Nama</label>
+                                                    <input type="text" class="form-control" name="nama"
+                                                        value="{{ $p->nama }}" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">NIP</label>
+                                                    <input type="number" class="form-control" name="nip"
+                                                        value="{{ $p->nip }}" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Pangkat jabatan/Gol</label>
+                                                    <input type="text" class="form-control" name="pangkat_jabatan"
+                                                        value="{{ $p->pangkat_jabatan }}" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Jabatan</label>
+                                                    <input type="text" class="form-control" name="jabatan"
+                                                        value="{{ $p->jabatan }}" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Unit Kerja</label>
+                                                    <input type="text" class="form-control" name="unit_kerja"
+                                                        value="{{ $p->unit_kerja }}" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Jenis Izin</label>
+                                                    <select class="form-select jenisIzin" name="jenis_izin"
+                                                        id="jenisIzin{{ $p->id }}" data-id="{{ $p->id }}"
+                                                        aria-label="Default select example">
+                                                        <option value="Tidak Masuk Kerja"
+                                                            @if ($p->jenis_izin == 'Tidak Masuk Kerja') selected @endif>Tidak Masuk
+                                                            Kerja
+                                                        </option>
+                                                        <option value="Pulang lebih cepat dari waktu kepulangan kerja"
+                                                            @if ($p->jenis_izin == 'Pulang lebih cepat dari waktu kepulangan kerja') selected @endif>Pulang lebih
+                                                            cepat
+                                                            dari waktu kepulangan kerja</option>
+                                                        <option value="Terlambat datang masuk kerja"
+                                                            @if ($p->jenis_izin == 'Terlambat datang masuk kerja') selected @endif>Terlambat
+                                                            datang masuk
+                                                            kerja</option>
+                                                    </select>
+                                                </div>
+                                                <div id="inputWaktu{{ $p->id }}"
+                                                    class="{{ !$p->waktu ? 'd-none' : '' }}">
+                                                    <div class="mb-3">
+                                                        <label for="waktu" class="form-label">Masukkan Waktu</label>
+                                                        <input type="time" step="60" class="form-control"
+                                                            id="waktu" name="waktu" value="{{ $p->waktu }}">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Izin ke-</label>
+                                                    <select class="form-select" name="izin_ke"
+                                                        aria-label="Default select example">
+                                                        <option value="1"
+                                                            @if ($p->izin_ke == 1) selected @endif>1
+                                                        </option>
+                                                        <option value="2"
+                                                            @if ($p->izin_ke == 2) selected @endif>2
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tanggal</label>
+                                                    <input type="date" class="form-control" name="tanggal"
+                                                        value="{{ $p->tanggal }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="alasan" class="form-label">Alasan</label>
+                                                    <textarea class="form-control" id="alasan" name="alasan" rows="3">{{ $p->alasan }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="formFile" class="form-label">Bukti</label>
+                                                    <input class="form-control" class="form-control w-50" name="bukti"
+                                                        type="file" id="formFile">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Tutup</button>
+                                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Pangkat jabatan/Gol</label>
-                                            <input type="text" class="form-control" name="pangkat_jabatan"
-                                                value="{{ $p->pangkat_jabatan }}" readonly>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Jabatan</label>
-                                            <input type="text" class="form-control" name="jabatan"
-                                                value="{{ $p->jabatan }}" readonly>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Unit Kerja</label>
-                                            <input type="text" class="form-control" name="unit_kerja"
-                                                value="{{ $p->unit_kerja }}" readonly>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Jenis Izin</label>
-                                            <select class="form-select jenisIzin" name="jenis_izin"
-                                                id="jenisIzin{{ $p->id }}" data-id="{{ $p->id }}"
-                                                aria-label="Default select example">
-                                                <option value="Tidak Masuk Kerja"
-                                                    @if ($p->jenis_izin == 'Tidak Masuk Kerja') selected @endif>Tidak Masuk Kerja
-                                                </option>
-                                                <option value="Pulang lebih cepat dari waktu kepulangan kerja"
-                                                    @if ($p->jenis_izin == 'Pulang lebih cepat dari waktu kepulangan kerja') selected @endif>Pulang lebih cepat
-                                                    dari waktu kepulangan kerja</option>
-                                                <option value="Terlambat datang masuk kerja"
-                                                    @if ($p->jenis_izin == 'Terlambat datang masuk kerja') selected @endif>Terlambat datang masuk
-                                                    kerja</option>
-                                            </select>
-                                        </div>
-                                        <div id="inputWaktu{{ $p->id }}"
-                                            class="{{ !$p->waktu ? 'd-none' : '' }}">
-                                            <div class="mb-3">
-                                                <label for="waktu" class="form-label">Masukkan Waktu</label>
-                                                <input type="time" step="60" class="form-control" id="waktu"
-                                                    name="waktu" value="{{ $p->waktu }}">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Izin ke-</label>
-                                            <select class="form-select" name="izin_ke"
-                                                aria-label="Default select example">
-                                                <option value="1" @if ($p->izin_ke == 1) selected @endif>1
-                                                </option>
-                                                <option value="2" @if ($p->izin_ke == 2) selected @endif>2
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Tanggal</label>
-                                            <input type="date" class="form-control" name="tanggal"
-                                                value="{{ $p->tanggal }}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="alasan" class="form-label">Alasan</label>
-                                            <textarea class="form-control" id="alasan" name="alasan" rows="3">{{ $p->alasan }}</textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="formFile" class="form-label">Bukti</label>
-                                            <input class="form-control" class="form-control w-50" name="bukti"
-                                                type="file" id="formFile">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Tutup</button>
-                                            <button type="submit" class="btn btn-primary">Simpan</button>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    {{-- End Modal --}}
+                            {{-- End Modal --}}
                         @endforeach
                     </tbody>
                 </table>

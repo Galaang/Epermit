@@ -32,6 +32,9 @@
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="email"
                         value="{{ old('email', Auth::user()->email) }}">
+                        @if ($errors->has('email'))
+                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                        @endif
                 </div>
             </div>
 

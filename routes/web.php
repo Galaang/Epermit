@@ -92,7 +92,7 @@ Route::middleware(['auth', 'role:2'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:2,3'])->group(function () {
-Route::get('/data_permohonan', [perizinan::class, 'data_permohonan'])->name('data_permohonan');
+    Route::get('/data_permohonan', [perizinan::class, 'data_permohonan'])->name('data_permohonan');
 });
 
 Route::middleware(['auth', 'role:3'])->group(function () {
@@ -100,19 +100,21 @@ Route::middleware(['auth', 'role:3'])->group(function () {
     Route::get('/data_permohonan_wadir2', [perizinan::class, 'data_permohonan_wadir2'])->name('data_permohonan_wadir2');
 });
 
-Route::middleware(['auth', 'role:1,2,3,4'])->group(function () {
-    // profile
-    Route::get('/profile', [Auth_controller::class, 'profile'])->name('profile');
-    Route::post('/profile', [Auth_controller::class, 'editProfile'])->name('edit_profile');
+// Route::middleware(['auth', 'role:1,2,3,4'])->group(function () {
+// profile
+Route::get('/profile', [Auth_controller::class, 'profile'])->name('profile');
+Route::post('/profile', [Auth_controller::class, 'editProfile'])->name('edit_profile');
 
-    // form perizinan
-    Route::get('/form', [perizinan::class, 'form_izin'])->name('form_izin');
-    Route::post('/form-insert', [perizinan::class, 'insert'])->name('form-insert');
-    Route::get('/riwayat_permohonan', [perizinan::class, 'riwayat_permohonan'])->name('riwayat_permohonan');
-    Route::post('/edit-respon/{id}', [perizinan::class, 'editRespon'])->name('edit_respon');
-    Route::match(['get', 'post'], '/update/data_permohonan/{id}', [perizinan::class, 'update'])->name('update');
-    Route::post('/form-batal/{id}', [perizinan::class, 'pembatalan'])->name('form-batal');
-});
+// form perizinan
+Route::get('/form', [perizinan::class, 'form_izin'])->name('form_izin');
+Route::post('/form-insert', [perizinan::class, 'insert'])->name('form-insert');
+Route::get('/riwayat_permohonan', [perizinan::class, 'riwayat_permohonan'])->name('riwayat_permohonan');
+Route::post('/edit-respon/{id}', [perizinan::class, 'editRespon'])->name('edit_respon');
+Route::post('/tolak-izin/{id}', [perizinan::class, 'tolakizin'])->name('tolakizin');
+Route::post('/edit-responwd/{id}', [perizinan::class, 'editResponwd'])->name('edit_responwd');
+Route::match(['get', 'post'], '/update/data_permohonan/{id}', [perizinan::class, 'update'])->name('update');
+Route::post('/form-batal/{id}', [perizinan::class, 'pembatalan'])->name('form-batal');
+// });
 
 Route::middleware(['auth', 'role:4'])->group(function () {
     // riwayat perizinan

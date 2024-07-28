@@ -51,7 +51,8 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Jenis Izin</label>
-                <select class="form-select w-50" name="jenis_izin" id="jenisIzin" aria-label="Default select example">
+                <select class="form-select w-50" name="jenis_izin" id="jenisIzin" aria-label="Default select example" onchange="updateIzinKeOptions()">
+                    <option value="" selected disabled hidden>pilih jenis izin</option>
                     <option value="Tidak Masuk Kerja">Tidak masuk kerja</option>
                     <option value="Pulang lebih cepat dari waktu kepulangan kerja">Pulang lebih cepat dari waktu kepulangan
                         kerja</option>
@@ -64,12 +65,11 @@
                     <input type="time" class="form-control w-50" id="waktu" name="waktu">
                 </div>
             </div>
-            
+
             <div class="mb-3">
                 <label class="form-label">Izin ke-</label>
-                <select class="form-select w-50" name="izin_ke" aria-label="Default select example">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
+                <select class="form-select w-50" name="izin_ke" id="izinKe" aria-label="Default select example">
+                    <option value="" selected disabled hidden value="">izin ke-</option>
                 </select>
             </div>
             <div class="mb-3">
@@ -103,41 +103,41 @@
 </script>
 
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var now = new Date();
-            var hours = ("0" + now.getHours()).slice(-2);
-            var minutes = ("0" + now.getMinutes()).slice(-2);
-            var currentTime = hours + ":" + minutes;
-            document.getElementById("waktu").setAttribute("min", currentTime);
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+        var now = new Date();
+        var hours = ("0" + now.getHours()).slice(-2);
+        var minutes = ("0" + now.getMinutes()).slice(-2);
+        var currentTime = hours + ":" + minutes;
+        document.getElementById("waktu").setAttribute("min", currentTime);
+    });
 
-        function validateTime() {
-            const inputTime = document.getElementById('waktu').value;
-            const errorMessage = document.getElementById('error-message');
+    function validateTime() {
+        const inputTime = document.getElementById('waktu').value;
+        const errorMessage = document.getElementById('error-message');
 
-            if (!inputTime) {
-                errorMessage.textContent = 'Silakan masukkan waktu';
-                errorMessage.style.display = 'block';
-                return;
-            }
-
-            const inputDate = new Date();
-            const [inputHours, inputMinutes] = inputTime.split(':');
-            inputDate.setHours(parseInt(inputHours));
-            inputDate.setMinutes(parseInt(inputMinutes));
-
-            const currentDate = new Date();
-
-            if (inputDate <= currentDate) {
-                errorMessage.textContent = 'Waktu harus setelah waktu saat ini';
-                errorMessage.style.display = 'block';
-            } else {
-                errorMessage.style.display = 'none';
-                alert('Waktu valid!');
-                // Lakukan tindakan jika waktu valid
-            }
+        if (!inputTime) {
+            errorMessage.textContent = 'Silakan masukkan waktu';
+            errorMessage.style.display = 'block';
+            return;
         }
-    </script>
+
+        const inputDate = new Date();
+        const [inputHours, inputMinutes] = inputTime.split(':');
+        inputDate.setHours(parseInt(inputHours));
+        inputDate.setMinutes(parseInt(inputMinutes));
+
+        const currentDate = new Date();
+
+        if (inputDate <= currentDate) {
+            errorMessage.textContent = 'Waktu harus setelah waktu saat ini';
+            errorMessage.style.display = 'block';
+        } else {
+            errorMessage.style.display = 'none';
+            alert('Waktu valid!');
+            // Lakukan tindakan jika waktu valid
+        }
+    }
+</script>
 
 
 <script>
@@ -152,6 +152,25 @@
             }
         });
     });
+</script>
+
+<script>
+    var izinData = @json($izinData);
+
+    function updateIzinKeOptions() {
+        var jenisIzin = document.getElementById('jenisIzin').value;
+        var izinKeSelect = document.getElementById('izinKe');
+        izinKeSelect.innerHTML = '<option value="">Pilih Izin Ke</option>';
+
+        if (jenisIzin && izinData[jenisIzin]) {
+            if (!izinData[jenisIzin]['izin_ke_1']) {
+                izinKeSelect.innerHTML += '<option value="1">Izin ke-1</option>';
+            }
+            if (!izinData[jenisIzin]['izin_ke_2']) {
+                izinKeSelect.innerHTML += '<option value="2">Izin ke-2</option>';
+            }
+        }
+    }
 </script>
 
 @if (session('success'))
